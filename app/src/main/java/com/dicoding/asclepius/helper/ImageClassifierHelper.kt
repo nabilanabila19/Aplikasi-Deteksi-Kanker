@@ -72,7 +72,7 @@ class ImageClassifierHelper(
                 // 3. Buat ImageProcessor
                 val imageProcessor = ImageProcessor.Builder()
                     .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
-                    .add(NormalizeOp(0f, 1f))
+                    //.add(NormalizeOp(0f, 1f))
                     .add(CastOp(DataType.UINT8))
                     .build()
 

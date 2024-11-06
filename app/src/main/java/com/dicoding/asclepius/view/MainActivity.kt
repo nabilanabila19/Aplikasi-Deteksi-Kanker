@@ -13,11 +13,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.databinding.ActivityMainBinding
+import com.dicoding.asclepius.helper.ImageClassifierHelper
 import org.tensorflow.lite.task.vision.classifier.Classifications
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ImageClassifierHelper.ClassifierListener {
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var imageClassifierHelper: ImageClassifierHelper
     private var currentImageUri: Uri? = null
 
     private val requestPermissionLauncher =
@@ -41,6 +42,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        imageClassifierHelper = ImageClassifierHelper(
+            context = this,
+            classifierListener = this
+        )
 
         if (!allPermissionsGranted()) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
@@ -82,27 +88,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun analyzeImage(uri: Uri) {
         // TODO: Menganalisa gambar yang berhasil ditampilkan.
-        val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-        startActivity(intent)
+        imageClassifierHelper.classifyStaticImage(uri)
     }
 
-    fun onResults(results: List<Classifications>?, inferenceTime: Long) {
+    override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
         results?.let {
             val topResult = it[0].categories[0]
             val resultText = topResult.label
             val confidenceScore = topResult.score
 
+            Log.d("Classifier", "Prediction: $resultText, Confidence: $confidenceScore")
+
             val intent = Intent(this, ResultActivity::class.java).apply {
                 putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-                putExtra(ResultActivity.EXTRA_RESULT, resultText) // Tambahkan hasil prediksi
-                putExtra(
-                    ResultActivity.EXTRA_CONFIDENCE,
-                    confidenceScore
-                ) // Tambahkan confidence score
+                intent.putExtra(ResultActivity.EXTRA_RESULT, resultText) // Hasil prediksi dari model
+                intent.putExtra(ResultActivity.EXTRA_CONFIDENCE, confidenceScore) // Nilai confidence dari model
             }
             startActivity(intent)
         }
+    }
+
+    override fun onError(error: String) {
+        TODO("Not yet implemented")
     }
 
     private fun moveToResult() {
