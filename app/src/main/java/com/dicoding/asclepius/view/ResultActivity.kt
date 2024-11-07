@@ -1,5 +1,6 @@
 package com.dicoding.asclepius.view
 
+import android.app.Activity
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,8 +25,13 @@ class ResultActivity : AppCompatActivity() {
         }
 
         // Ambil hasil prediksi dan confidence score
-        val resultText = intent.getStringExtra(EXTRA_RESULT) ?: "Unknown"
+        //val resultText = intent.getStringExtra(EXTRA_RESULT) ?: "Unknown"
+        //val confidenceScore = intent.getFloatExtra(EXTRA_CONFIDENCE, 0.0f)
+
+        val resultText = intent.getStringExtra(EXTRA_RESULT)?.let { it } ?: "Unknown"
         val confidenceScore = intent.getFloatExtra(EXTRA_CONFIDENCE, 0.0f)
+        Log.d("ResultActivity", "Prediction: $resultText, Confidence: $confidenceScore")
+
 
         // Tampilkan hasil di UI
         binding.resultText.text = "Prediction: $resultText\nConfidence: ${"%.2f".format(confidenceScore * 100)}%"
