@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.model.News
+import com.dicoding.asclepius.view.HistoryAdapter.Companion.DIFF_CALLBACK
 
-class NewsAdapter(private val newsList: List<News>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter : ListAdapter<News, NewsAdapter.NewsViewHolder>(DIFF_CALLBACK) {
 
     inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgItemPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
@@ -28,7 +31,7 @@ class NewsAdapter(private val newsList: List<News>) : RecyclerView.Adapter<NewsA
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        val news = newsList[position]
+        val news = getItem(position)
 
         Glide.with(holder.itemView.context)
             .load(news.imageUrl)
@@ -44,7 +47,19 @@ class NewsAdapter(private val newsList: List<News>) : RecyclerView.Adapter<NewsA
         }
     }
 
-    override fun getItemCount(): Int {
-        return newsList.size
+//    override fun getItemCount(): Int {
+//        return newsList.size
+//    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<News>() {
+            override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
+                return oldItem.url == newItem.url
+            }
+
+            override fun areContentsTheSame(oldItem: News, newItem: News): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

@@ -1,28 +1,47 @@
 package com.dicoding.asclepius.view
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.wifi.hotspot2.pps.HomeSp
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.asclepius.R
+import com.dicoding.asclepius.data.model.News
+import com.dicoding.asclepius.data.response.NewsResponse
+import com.dicoding.asclepius.data.retrofit.ApiConfig
 import com.dicoding.asclepius.databinding.ActivityHistoryBinding
 import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.databinding.ActivityNewsBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
     private lateinit var tvNotFound: TextView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var newsAdapter: NewsAdapter
     private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_news)
+        setContentView(binding.root)
+
+        recyclerView = findViewById(R.id.rvNews)
+        newsAdapter = NewsAdapter() // Inisialisasi dengan list kosong
+        recyclerView.adapter = newsAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        getCancerNews() // Panggil fungsi untuk mendapatkan berita
 
         bottomNavigationView = findViewById(R.id.menuBar)
         tvNotFound = findViewById(R.id.tvNotFound)
@@ -47,5 +66,36 @@ class NewsActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun getCancerNews() {
+        val client = ApiConfig.getApiService().getCancerNews()
+        client.enqueue(object : Callback<NewsResponse> {
+            override fun onResponse(
+                call: Call<NewsResponse>,
+                response: Response<NewsResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        val newsList = responseBody.articles.map { article ->
+                            News(
+                                imageUrl = article.urlToImage ?: "",
+                                title = article.title,
+                                description = article.description ?: "",
+                                url = article.url
+                            )
+                        }
+                        newsAdapter.submitList(newsList)
+                    }
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+        })
     }
 }
