@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -41,8 +42,8 @@ class NewsAdapter : ListAdapter<News, NewsAdapter.NewsViewHolder>(DIFF_CALLBACK)
 
         holder.btnViewMore.setOnClickListener {
             val url = news.url
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            holder.itemView.context.startActivity(intent)
+            val customTabsIntent = CustomTabsIntent.Builder().build()
+            customTabsIntent.launchUrl(holder.itemView.context, Uri.parse(url))
         }
     }
 
