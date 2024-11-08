@@ -33,6 +33,7 @@ class HistoryAdapter(private val onDeleteClickListener: (HistoryEntity) -> Unit)
         private val imageView: ImageView = itemView.findViewById(R.id.savedImg)
         private val textViewDate: TextView = itemView.findViewById(R.id.tvDate)
         private val textViewLabel: TextView = itemView.findViewById(R.id.tvLabel)
+        private val textViewConfidence: TextView = itemView.findViewById(R.id.tvConfidence)
         private val btnDelete: Button = itemView.findViewById(R.id.btnDelete)
 
         fun bind(history: HistoryEntity) {
@@ -46,9 +47,17 @@ class HistoryAdapter(private val onDeleteClickListener: (HistoryEntity) -> Unit)
             textViewDate.text = formattedDate
 
             textViewLabel.text = history.result
+            val confidencePercentage = history.confidence * 100
+            textViewConfidence.text = "Confidence: ${"%.2f".format(confidencePercentage)}%"
 
             btnDelete.setOnClickListener {
-                onDeleteClickListener(history) // Panggil onDeleteClickListener dengan HistoryEntity
+                onDeleteClickListener(history)
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val currentList = currentList.toMutableList()
+                    currentList.removeAt(position)
+                    submitList(currentList)
+                }
             }
         }
     }

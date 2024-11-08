@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +28,8 @@ class HistoryActivity : AppCompatActivity() {
     }
     private val historyAdapter by lazy {
         HistoryAdapter { history ->
-            historyViewModel.deleteHistory(history) // Ganti viewModel dengan historyViewModel
+            historyViewModel.deleteHistory(history)
+            Toast.makeText(this, "History deleted", Toast.LENGTH_SHORT).show()
         }
     }
 
