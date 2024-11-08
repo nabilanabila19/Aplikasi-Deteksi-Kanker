@@ -19,10 +19,10 @@ abstract class HistoryDatabase : RoomDatabase() {
                 val newInstance = Room.databaseBuilder(
                     context.applicationContext,
                     HistoryDatabase::class.java,
-                    "event_database"
+                    "history_database"
                 )
-
                     .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .build()
                 instance = newInstance
                 newInstance

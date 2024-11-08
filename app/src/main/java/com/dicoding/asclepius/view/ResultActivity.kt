@@ -5,8 +5,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.dicoding.asclepius.R
+import com.dicoding.asclepius.data.local.entity.HistoryEntity
 import com.dicoding.asclepius.data.local.room.HistoryDatabase
 import com.dicoding.asclepius.data.repository.InformationRepository
 import com.dicoding.asclepius.databinding.ActivityResultBinding
@@ -42,6 +44,21 @@ class ResultActivity : AppCompatActivity() {
 
         // Tampilkan hasil di UI
         binding.resultText.text = "Prediction: $resultText\nConfidence: ${"%.2f".format(confidenceScore * 100)}%"
+
+        binding.saveButton.setOnClickListener {
+            val imageUriString = intent.getStringExtra(EXTRA_IMAGE_URI) ?: ""
+            val resultText = intent.getStringExtra(EXTRA_RESULT) ?: "Unknown"
+            val confidenceScore = intent.getFloatExtra(EXTRA_CONFIDENCE, 0.0f)
+
+            val historyEntity = HistoryEntity(
+                imagePath = imageUriString,
+                result = resultText,
+                confidence = confidenceScore
+            )
+
+            historyViewModel.insertHistory(historyEntity)
+            Toast.makeText(this, "History saved", Toast.LENGTH_SHORT).show() // Opsional: tampilkan Toast
+        }
     }
 
     companion object {
