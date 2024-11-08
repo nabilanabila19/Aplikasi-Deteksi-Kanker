@@ -15,10 +15,12 @@ import androidx.core.content.ContextCompat
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.helper.ImageClassifierHelper
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.tensorflow.lite.task.vision.classifier.Classifications
 
 class MainActivity : AppCompatActivity(), ImageClassifierHelper.ClassifierListener {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var imageClassifierHelper: ImageClassifierHelper
     private var currentImageUri: Uri? = null
 
@@ -59,6 +61,24 @@ class MainActivity : AppCompatActivity(), ImageClassifierHelper.ClassifierListen
                 analyzeImage(it)
             } ?: run {
                 showToast(getString(R.string.empty_image_warning))
+            }
+        }
+
+        bottomNavigationView = findViewById(R.id.menuBar)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    true
+                }
+                R.id.news -> {
+                    startActivity(Intent(this,NewsActivity::class.java))
+                    true
+                }
+                R.id.history -> {
+                    startActivity(Intent(this,HistoryActivity::class.java))
+                    true
+                }
+                else -> false
             }
         }
     }
