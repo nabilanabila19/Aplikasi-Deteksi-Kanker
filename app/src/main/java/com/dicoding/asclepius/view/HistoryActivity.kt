@@ -34,7 +34,10 @@ class HistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_history)
+        // Pindahkan kode ini ke sebelum setContentView()
+        binding.rvHistory.adapter = historyAdapter
+        binding.rvHistory.layoutManager = LinearLayoutManager(this)
+        setContentView(binding.root)
 
         bottomNavigationView = findViewById(R.id.menuBar)
         tvNotFound = findViewById(R.id.tvNotFound)
