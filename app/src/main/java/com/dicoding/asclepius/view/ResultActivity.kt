@@ -5,11 +5,18 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import com.dicoding.asclepius.R
+import com.dicoding.asclepius.data.local.room.HistoryDatabase
+import com.dicoding.asclepius.data.repository.InformationRepository
 import com.dicoding.asclepius.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultBinding
+
+    private val historyViewModel by viewModels<HistoryViewModel> {
+        HistoryViewModelFactory(InformationRepository(HistoryDatabase.getInstance(this).historyDao()))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

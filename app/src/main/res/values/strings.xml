@@ -9,6 +9,7 @@
     <string name="home">Home</string>
     <string name="news">News</string>
     <string name="history">History</string>
+    <string name="prediction">Prediksi</string>
     <string name="simpan">Simpan Hasil</string>
     <string name="no_history_found">History Kosong</string>
     <string name="no_news_found">Berita Kosong</string>

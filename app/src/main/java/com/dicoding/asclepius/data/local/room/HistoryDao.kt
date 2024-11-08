@@ -1,6 +1,7 @@
 package com.dicoding.asclepius.data.local.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -14,6 +15,6 @@ interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHistory(history: HistoryEntity)
 
-    @Query("DELETE FROM history")
-    suspend fun deleteAllHistory()
+    @Delete
+    suspend fun deleteHistory(history: HistoryEntity)
 }
