@@ -5,17 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.local.room.HistoryDatabase
 import com.dicoding.asclepius.data.repository.InformationRepository
 import com.dicoding.asclepius.databinding.ActivityHistoryBinding
-import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HistoryActivity : AppCompatActivity() {
@@ -36,7 +32,6 @@ class HistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
-        // Pindahkan kode ini ke sebelum setContentView()
         binding.rvHistory.adapter = historyAdapter
         binding.rvHistory.layoutManager = LinearLayoutManager(this)
         setContentView(binding.root)
@@ -74,7 +69,7 @@ class HistoryActivity : AppCompatActivity() {
             }
         }
 
-        binding.rvHistory.adapter = historyAdapter // Pasang adapter ke RecyclerView
-        binding.rvHistory.layoutManager = LinearLayoutManager(this) // Atur layout manager
+        binding.rvHistory.adapter = historyAdapter
+        binding.rvHistory.layoutManager = LinearLayoutManager(this)
     }
 }

@@ -2,22 +2,16 @@ package com.dicoding.asclepius.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
-import android.net.wifi.hotspot2.pps.HomeSp
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.model.News
 import com.dicoding.asclepius.data.response.NewsResponse
 import com.dicoding.asclepius.data.retrofit.ApiConfig
-import com.dicoding.asclepius.databinding.ActivityHistoryBinding
-import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.databinding.ActivityNewsBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
@@ -37,11 +31,11 @@ class NewsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         recyclerView = findViewById(R.id.rvNews)
-        newsAdapter = NewsAdapter() // Inisialisasi dengan list kosong
+        newsAdapter = NewsAdapter()
         recyclerView.adapter = newsAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        getCancerNews() // Panggil fungsi untuk mendapatkan berita
+        getCancerNews()
 
         bottomNavigationView = findViewById(R.id.menuBar)
         tvNotFound = findViewById(R.id.tvNotFound)

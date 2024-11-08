@@ -11,6 +11,6 @@ interface ApiService {
         @Query("q") query: String = "cancer",
         @Query("category") category: String = "health",
         @Query("language") language: String = "en",
-        @Query("apiKey") apiKey: String = "360e3f0eb08441ebb4a4552133c5c338" // Ganti dengan API key Anda
+        @Query("apiKey") apiKey: String = "360e3f0eb08441ebb4a4552133c5c338" // API key
     ): Call<NewsResponse>
 }

@@ -1,13 +1,11 @@
 package com.dicoding.asclepius.view
 
-import android.app.Activity
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.local.entity.HistoryEntity
 import com.dicoding.asclepius.data.local.room.HistoryDatabase
 import com.dicoding.asclepius.data.repository.InformationRepository
@@ -33,16 +31,10 @@ class ResultActivity : AppCompatActivity() {
             binding.resultImage.setImageURI(it)
         }
 
-        // Ambil hasil prediksi dan confidence score
-        //val resultText = intent.getStringExtra(EXTRA_RESULT) ?: "Unknown"
-        //val confidenceScore = intent.getFloatExtra(EXTRA_CONFIDENCE, 0.0f)
-
         val resultText = intent.getStringExtra(EXTRA_RESULT)?.let { it } ?: "Unknown"
         val confidenceScore = intent.getFloatExtra(EXTRA_CONFIDENCE, 0.0f)
         Log.d("ResultActivity", "Prediction: $resultText, Confidence: $confidenceScore")
 
-
-        // Tampilkan hasil di UI
         binding.resultText.text = "Prediction: $resultText\nConfidence: ${"%.2f".format(confidenceScore * 100)}%"
 
         binding.saveButton.setOnClickListener {
@@ -57,13 +49,13 @@ class ResultActivity : AppCompatActivity() {
             )
 
             historyViewModel.insertHistory(historyEntity)
-            Toast.makeText(this, "History saved", Toast.LENGTH_SHORT).show() // Opsional: tampilkan Toast
+            Toast.makeText(this, "History saved", Toast.LENGTH_SHORT).show()
         }
     }
 
     companion object {
         const val EXTRA_IMAGE_URI = "extra_image_uri"
-        const val EXTRA_RESULT = "extra_result" // Tambahkan konstanta untuk hasil prediksi
-        const val EXTRA_CONFIDENCE = "extra_confidence" // Tambahkan konstanta untuk confidence score
+        const val EXTRA_RESULT = "extra_result"
+        const val EXTRA_CONFIDENCE = "extra_confidence"
     }
 }

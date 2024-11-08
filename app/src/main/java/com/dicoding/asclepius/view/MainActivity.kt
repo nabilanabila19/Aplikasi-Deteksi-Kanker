@@ -1,7 +1,6 @@
 package com.dicoding.asclepius.view
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -122,8 +121,8 @@ class MainActivity : AppCompatActivity(), ImageClassifierHelper.ClassifierListen
 
             val intent = Intent(this, ResultActivity::class.java).apply {
                 putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-                putExtra(ResultActivity.EXTRA_RESULT, resultText) // Hasil prediksi dari model
-                putExtra(ResultActivity.EXTRA_CONFIDENCE, confidenceScore) // Nilai confidence dari model
+                putExtra(ResultActivity.EXTRA_RESULT, resultText)
+                putExtra(ResultActivity.EXTRA_CONFIDENCE, confidenceScore)
             }
             startActivity(intent)
         }

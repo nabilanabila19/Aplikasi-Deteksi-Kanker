@@ -17,6 +17,6 @@ class InformationRepository(
     }
 
     suspend fun deleteHistory(history: HistoryEntity) {
-        historyDao.deleteHistory(history) // Implement delete logic here
+        historyDao.deleteHistory(history)
     }
 }

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.model.News
-import com.dicoding.asclepius.view.HistoryAdapter.Companion.DIFF_CALLBACK
 
 class NewsAdapter : ListAdapter<News, NewsAdapter.NewsViewHolder>(DIFF_CALLBACK) {
 

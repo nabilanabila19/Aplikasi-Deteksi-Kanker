@@ -1,10 +1,8 @@
 package com.dicoding.asclepius.helper
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
@@ -13,7 +11,6 @@ import android.util.Log
 import com.dicoding.asclepius.R
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.common.ops.CastOp
-import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
@@ -59,7 +56,6 @@ class ImageClassifierHelper(
     fun classifyStaticImage(imageUri: Uri) {
         // TODO: mengklasifikasikan imageUri dari gambar statis.
         try {
-            // 1. Konversi Uri ke Bitmap
             val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val source = ImageDecoder.createSource(context.contentResolver, imageUri)
                 ImageDecoder.decodeBitmap(source)
@@ -67,31 +63,24 @@ class ImageClassifierHelper(
                 MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
             }.copy(Bitmap.Config.ARGB_8888, true)
 
-            // 2. Periksa apakah bitmap berhasil dibuat
             if (bitmap != null) {
-                // 3. Buat ImageProcessor
                 val imageProcessor = ImageProcessor.Builder()
                     .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
                     //.add(NormalizeOp(0f, 1f))
                     .add(CastOp(DataType.UINT8))
                     .build()
 
-                // 4. Konversi Bitmap ke TensorImage
                 val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmap))
 
-                // 5. Lakukan klasifikasi
                 var inferenceTime = SystemClock.uptimeMillis()
                 val results = imageClassifier?.classify(tensorImage)
                 inferenceTime = SystemClock.uptimeMillis() - inferenceTime
 
-                // 6. Kirim hasil ke ClassifierListener
                 classifierListener?.onResults(results, inferenceTime)
             } else {
-                // Tangani error jika bitmap gagal dibuat
                 classifierListener?.onError("Gagal memuat gambar")
             }
         } catch (e: Exception) {
-            // Tangani error umum
             classifierListener?.onError("Error: ${e.message}")
             Log.e(TAG, "Error classifying image: ${e.localizedMessage}")
         }

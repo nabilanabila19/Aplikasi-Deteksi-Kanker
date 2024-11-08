@@ -1,6 +1,5 @@
 package com.dicoding.asclepius.view
 
-import androidx.activity.result.launch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
