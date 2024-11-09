@@ -128,8 +128,22 @@ class MainActivity : AppCompatActivity(), ImageClassifierHelper.ClassifierListen
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("currentImageUri", currentImageUri.toString()) // Menyimpan URI gambar
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val savedImageUriString = savedInstanceState.getString("currentImageUri")
+        if (savedImageUriString != null) {
+            currentImageUri = Uri.parse(savedImageUriString) // Memulihkan URI gambar
+            showImage() // Menampilkan gambar kembali
+        }
+    }
+
     override fun onError(error: String) {
-        TODO("Not yet implemented")
+        Toast.makeText(this, "Terjadi kesalahan: $error", Toast.LENGTH_SHORT).show()
     }
 
     private fun moveToResult() {

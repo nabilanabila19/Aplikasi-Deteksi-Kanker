@@ -41,7 +41,6 @@ class HistoryAdapter(private val onDeleteClickListener: (HistoryEntity) -> Unit)
                 .load(history.imagePath)
                 .into(imageView)
 
-            // Format tanggal
             val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
             val formattedDate = dateFormat.format(Date(history.createdAt))
             textViewDate.text = formattedDate
